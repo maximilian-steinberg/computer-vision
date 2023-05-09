@@ -2,12 +2,12 @@ train: ../train/images
 val: ../valid/images
 test: ../test/images
 
-nc: 2
-names: ['FH_barcode_breit_nr_gross', 'FH_barcode_breit_nr_klein']
+nc: 10
+names: ['FH_barcode_breit_nr_gross', 'FH_barcode_breit_nr_klein', 'FH_onlyNumber_handwritten_KTD_nummer', 'FH_onlyNumber_handwritten_normalNumber', 'FH_onlyNumber_printed_with_extra_number', 'FH_onlyNumber_printed_without_extra_number', 'FH_ueberklebt', 'HS_barcode_breit_nr_links', 'HS_barcode_breit_nr_mittig', 'HS_barcode_klein']
 
 roboflow:
   workspace: computervision-8b931
   project: label-detection-47qg7
-  version: 2
+  version: 4
   license: Private
-  url: https://app.roboflow.com/computervision-8b931/label-detection-47qg7/2
+  url: https://app.roboflow.com/computervision-8b931/label-detection-47qg7/4
