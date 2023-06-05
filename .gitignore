@@ -1,5 +1,11 @@
-# Predicts 
-runs/segment/predict/
+# Runs 
+runs/
+
+# DataSet 
+Yolo_net/dataset
+
+# Data.yaml
+data.yaml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
