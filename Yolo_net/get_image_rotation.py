@@ -10,7 +10,7 @@ def get_image_rotation(img):
     cdstP = np.copy(cdst)
 
     #  Standard Hough Line Transform
-    linesP = cv.HoughLinesP(dst, 1, np.pi / 180, 50, None, 50, 20)
+    linesP = cv.HoughLinesP(dst, 1, np.pi / 180, 50, None, 50, 10)
 
     length = 0
     longest_line = None

@@ -38,42 +38,24 @@ for result in results:
         # show masked image
         # cv2.imshow('Masked', masked)
 
-    rotation = get_image_rotation(img_masked)
-    img_rotated = ndimage.rotate(img_masked, rotation)
-    mask_rotated = ndimage.rotate(mask, rotation)
-
     # Crop image
-    rect = cv2.boundingRect(mask_rotated)
-    img_cropped = img_rotated[rect[1]:(rect[1]+rect[3]), rect[0]:(rect[0]+rect[2])]
+    rect = cv2.boundingRect(mask)
+    img_cropped = img_masked[rect[1]:(rect[1]+rect[3]), rect[0]:(rect[0]+rect[2])]
+    mask_cropped = mask[rect[1]:(rect[1]+rect[3]), rect[0]:(rect[0]+rect[2])]
+
+    # Get image rotation
+    rotation = get_image_rotation(img_cropped)
+    img_rotated = ndimage.rotate(img_cropped, rotation)
+    mask_rotated = ndimage.rotate(mask_cropped, rotation)
+
+    # Crop result
+    rect_result = cv2.boundingRect(mask_rotated)
+    img_cropped_further = img_rotated[rect_result[1]:(rect_result[1]+rect_result[3]), rect_result[0]:(rect_result[0]+rect_result[2])]
 
     # Preview result
-    cv2.imshow("img_cropped", img_cropped)
+    cv2.imshow("Img cropped final", img_cropped_further)
+    cv2.waitKey(0)
     
 
-cv2.waitKey(0)
 cv2.destroyAllWindows()
 cv2.waitKey(0)
-
-
-
-
-    # crop image
-
-
-    # save image
-
-
-
-# modify result (with crops)
-# results = model.predict('C:/Users/Dimster/Documents/6. Semester/Computer Vision/datasets/test/images',
-#                         show=True,
-#                         save=True,
-#                         save_crop=True,
-#                         max_det=1,
-#                         retina_masks=True)
-
-# preview result
-# for result in results:
-#     boxes = result.boxes  # Boxes object for bbox outputs
-#     masks = result.masks  # Masks object for segmentation masks outputs
-#     probs = result.probs  # Class probabilities for classification outputs

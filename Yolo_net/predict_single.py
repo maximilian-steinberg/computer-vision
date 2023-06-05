@@ -21,20 +21,22 @@ mask = (results[0].masks.data[0].cpu().numpy() * 255).astype('uint8')
 
 # Apply mask to image
 img_masked = cv.bitwise_and(img, img, mask=mask)
-cv.imshow("img_masked", img_masked)
-
-# Get image rotation
-rotation = get_image_rotation(img_masked)
-img_rotated = ndimage.rotate(img_masked, rotation)
-mask_rotated = ndimage.rotate(mask, rotation)
-
-cv.imshow("img_rotated", img_rotated)
-cv.imshow("mask_rotated", mask_rotated)
 
 # Crop image
-rect = cv.boundingRect(mask_rotated)
-img_cropped = img_rotated[rect[1]:(rect[1]+rect[3]), rect[0]:(rect[0]+rect[2])]
+rect = cv.boundingRect(mask)
+img_cropped = img_masked[rect[1]:(rect[1]+rect[3]), rect[0]:(rect[0]+rect[2])]
+mask_cropped = mask[rect[1]:(rect[1]+rect[3]), rect[0]:(rect[0]+rect[2])]
+
+# Get image rotation
+rotation = get_image_rotation(img_cropped)
+img_rotated = ndimage.rotate(img_cropped, rotation)
+mask_rotated = ndimage.rotate(mask_cropped, rotation)
+
+# Crop result
+rect_result = cv.boundingRect(mask_rotated)
+img_cropped_further = img_rotated[rect_result[1]:(rect_result[1]+rect_result[3]), rect_result[0]:(rect_result[0]+rect_result[2])]
+
+cv.imshow("Img cropped final", img_cropped_further)
 
 # Preview result
-cv.imshow("img_cropped", img_cropped)
 cv.waitKey(0)
