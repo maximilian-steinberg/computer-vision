@@ -7,7 +7,7 @@ from ultralytics import YOLO
 # small & fast & unreliable -----------> big & slow & reliable
 # Suffix -seg, -cls,
 # ------------------------------------------------------------
-model = YOLO('yolov8m-seg.pt')
+model = YOLO('net/yolov8m-seg.pt')
 
 if __name__ == '__main__':
     freeze_support()
@@ -19,4 +19,4 @@ if __name__ == '__main__':
     model.val()
 
     # export model
-    # model.export(format='pt') # choose format
+    model.export(format='pt') # choose format
