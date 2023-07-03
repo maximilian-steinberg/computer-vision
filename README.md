@@ -1,4 +1,7 @@
 # Computer Vision
+## Note
+Note that Commands uses in **Project Setup** depend on the installes Python version, Python path, operating system and shell uses. This example is run on MacOS terminal with Python installed as python3. 
+
 ## Project Setup
 1. Clone Project
 2. In terminal navigate to `../computer-vision/Yolo-net
@@ -6,7 +9,6 @@
 	- `python3 -m venv env`
 4. Activate local python environment 
 	- `source env/bin/activate` 
-	- *Command may differ from operating system and comand-line-tool e.g. Cmd, PowerShell, ... *
 5. Install project requirements
 	- `pip install -r requirements.txt`
 6. Navigate to Net-Folder
