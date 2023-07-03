@@ -2,6 +2,7 @@ import cv2 as cv
 import numpy as np
 from PIL import Image
 
+
 def get_approx(area):
     """
     Finds a 4-point approximation of a contour area by varying the epsilon value.
@@ -56,7 +57,7 @@ def order_points(pts):
     rotated_arr = np.roll(border_points, 3, axis=0)
 
     # Initialize an empty array to store the ordered points
-    rect = np.zeros((4, 2), dtype = "float32")
+    rect = np.zeros((4, 2), dtype="float32")
 
     # Assign the rotated points to the corresponding indices in the rect array
     rect[0] = rotated_arr[0]
@@ -66,6 +67,7 @@ def order_points(pts):
 
     # Return the rect array as the final ordered points
     return np.array(rect)
+
 
 def four_point_transform(image, pts):
     """
@@ -96,10 +98,10 @@ def four_point_transform(image, pts):
 
     # Construct the destination points for the transformed image
     dst = np.array([
-		[0, 0],
-		[width_max - 1, 0],
-		[width_max - 1, height_max - 1],
-		[0, height_max - 1]], dtype = "float32")
+        [0, 0],
+        [width_max - 1, 0],
+        [width_max - 1, height_max - 1],
+        [0, height_max - 1]], dtype="float32")
 
     # Retrieve the perspective transformation matrix using cv.getPerspectiveTransform
     matrix = cv.getPerspectiveTransform(rect, dst)

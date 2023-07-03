@@ -11,12 +11,14 @@ import imutils
 from ultralytics import YOLO
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--path', type=str, required=True, help='Path to the images')
+parser.add_argument('--path', type=str, required=True,
+                    help='Path to the images')
 args = parser.parse_args()
 
 # Select model
 model = YOLO('net/best.pt')
 NAMES = model.names
+
 
 def predict_all(path):
     """
@@ -53,12 +55,14 @@ def predict_all(path):
     files = os.listdir(path)
 
     # Filter the list to include only image files
-    image_files = [file for file in files if is_image_file(os.path.join(path, file))]
+    image_files = [file for file in files if is_image_file(
+        os.path.join(path, file))]
 
     # Iterate over the image files and call the process_image function
     for image_file in image_files:
         image_path = os.path.join(path, image_file)
         predict_single(image_path)
+
 
 def predict_single(path):
     """
@@ -74,21 +78,20 @@ def predict_single(path):
     # Get current directory
     directory = Path(os.getcwd()) / "Results/"
 
-    # Read image 
+    # Read image
     img = cv.imread(path)
 
-    # Predict on input data 
+    # Predict on input data
     results = model.predict(img,
-                        max_det=1,
-                        retina_masks=True)
+                            max_det=1,
+                            retina_masks=True)
 
     # get mask from result
     mask = (results[0].masks.data[0].cpu().numpy() * 255).astype('uint8')
 
-
-    # Find the label countours and the 4 label corners 
+    # Find the label countours and the 4 label corners
     contours = cv.findContours(mask.copy(), cv.RETR_EXTERNAL,
-	cv.CHAIN_APPROX_SIMPLE)
+                               cv.CHAIN_APPROX_SIMPLE)
     contours = imutils.grab_contours(contours)
     max_area = max(contours, key=cv.contourArea)
     approx_points = get_approx(max_area)
@@ -97,16 +100,18 @@ def predict_single(path):
     pointed_img = img.copy()
     cv.drawContours(pointed_img, [approx_points], -1, (0, 255, 0), 3)
     iteration = 1
-    for (x,y) in approx_points:
-        cv.circle(pointed_img, (x,y), radius=10, color=(0,0,255),thickness=-1)
-        cv.putText(pointed_img, str(iteration), (x-5,y+5), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
+    for (x, y) in approx_points:
+        cv.circle(pointed_img, (x, y), radius=10,
+                  color=(0, 0, 255), thickness=-1)
+        cv.putText(pointed_img, str(iteration), (x-5, y+5),
+                   cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
         iteration += 1
 
-    # Put text to the pointed image with points number 
+    # Put text to the pointed image with points number
     (x, y, w, h) = cv.boundingRect(max_area)
     text = "original, num_pts={}".format(len(approx_points))
     cv.putText(pointed_img, text, (x, y - 15), cv.FONT_HERSHEY_SIMPLEX,
-        0.9, (0, 255, 0), 2)
+               0.9, (0, 255, 0), 2)
 
     # Wrap the image
     output2 = img.copy()
@@ -118,20 +123,19 @@ def predict_single(path):
     if img_width < img_height:
         warped_img = cv.rotate(warped_img, cv.ROTATE_90_CLOCKWISE)
 
-
     # Save image
-    ## get image classification
+    # get image classification
     classification = NAMES[int(results[0].boxes.cls[0])]
 
-    ## get original image name
+    # get original image name
     filename = str(os.path.split(path)[1])
 
-    ## check if the classification directory already exists
-    ## if not, make a new one  
+    # check if the classification directory already exists
+    # if not, make a new one
     if not os.path.exists(directory / f"{classification}"):
         os.mkdir(directory / f"{classification}")
 
-    ## save the image in the corresponding directory
+    # save the image in the corresponding directory
     os.chdir(directory / f"{classification}")
     cv.imwrite(filename, warped_img)
 
